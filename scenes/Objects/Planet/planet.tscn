@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://lqaxhqq5yg8k"]
+
+[ext_resource type="Script" uid="uid://cqukcnlad70er" path="res://scenes/Objects/Planet/planet.gd" id="1_aeeex"]
+[ext_resource type="Texture2D" uid="uid://w1bmha43pfmm" path="res://icon.svg" id="1_fxu2j"]
+[ext_resource type="Shader" uid="uid://cfxylqp04nbir" path="res://shaders/planet_gravity_field.gdshader" id="3_ravj5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6ltg3"]
+shader = ExtResource("3_ravj5")
+shader_parameter/gravity_strength = 0.7
+shader_parameter/inner_radius = 0.18
+shader_parameter/outer_radius = 0.48
+shader_parameter/core_color = Color(0.3, 0.85, 1, 1)
+shader_parameter/field_color = Color(0.05, 0.25, 0.7, 1)
+shader_parameter/ring_color = Color(1, 0.92, 0.35, 1)
+shader_parameter/outer_color = Color(0, 0.1, 0.4, 0)
+shader_parameter/ring_count = 4
+shader_parameter/ring_speed = 1.1
+shader_parameter/ring_width = 0.018
+shader_parameter/ring_spacing = 0.22
+shader_parameter/breath_speed = 0.7
+shader_parameter/breath_amount = 0.045
+shader_parameter/wobble_speed = 1.3
+shader_parameter/wobble_amount = 0.018
+shader_parameter/shimmer_speed = 2.5
+shader_parameter/time_scale = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fxu2j"]
+radius = 20.0
+
+[node name="Planet" type="StaticBody2D" unique_id=54183248 groups=["planets"]]
+collision_mask = 0
+script = ExtResource("1_aeeex")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=59771650]
+material = SubResource("ShaderMaterial_6ltg3")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -303.0
+offset_top = -303.0
+offset_right = 303.0
+offset_bottom = 303.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1575841339]
+scale = Vector2(1.5625, 1.5625)
+texture = ExtResource("1_fxu2j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1348646464]
+shape = SubResource("CircleShape2D_fxu2j")

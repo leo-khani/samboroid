@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bn6akaxs6gjnr"]
+
+[ext_resource type="Texture2D" uid="uid://w1bmha43pfmm" path="res://icon.svg" id="1_i7fq4"]
+[ext_resource type="Script" uid="uid://cifofpmv3wfh3" path="res://scenes/Objects/Goal/goal.gd" id="1_pacha"]
+
+[node name="Goal" type="Area2D" unique_id=771016301]
+script = ExtResource("1_pacha")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=957782011]
+self_modulate = Color(1, 1, 0, 1)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_i7fq4")

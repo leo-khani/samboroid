@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cquy5aw1vggol"]
+
+[ext_resource type="Script" uid="uid://bccduwdgvcjna" path="res://scenes/Objects/Asteroid/asteroid.gd" id="1_e5orn"]
+[ext_resource type="Texture2D" uid="uid://d0bn24mk6l48i" path="res://assets/Asteroid.png" id="2_e5orn"]
+[ext_resource type="PackedScene" uid="uid://cprg12d5j2uji" path="res://scenes/Camera/camera_2d.tscn" id="3_4o5hi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e5orn"]
+radius = 7.0
+
+[node name="Asteroid" type="RigidBody2D" unique_id=1642232687 groups=["asteroid"]]
+collision_mask = 0
+script = ExtResource("1_e5orn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=386026638]
+shape = SubResource("CircleShape2D_e5orn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2123961690]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_e5orn")
+
+[node name="Camera2D" parent="." unique_id=1276765613 instance=ExtResource("3_4o5hi")]

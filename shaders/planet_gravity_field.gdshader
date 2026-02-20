@@ -1,0 +1,143 @@
+shader_type canvas_item;
+
+// ─────────────────────────────────────────
+//  PLANET GRAVITY INDICATOR — 2D
+//  Godot 4.x  |  canvas_item shader
+// ─────────────────────────────────────────
+
+// --- Core ---
+uniform float gravity_strength : hint_range(0.0, 1.0) = 0.7;
+uniform float inner_radius : hint_range(0.0, 0.5) = 0.18;   // planet body edge (UV space)
+uniform float outer_radius : hint_range(0.0, 0.5) = 0.48;   // field boundary (UV space)
+
+// --- Colors ---
+uniform vec4 core_color    : source_color = vec4(0.3,  0.85, 1.0,  1.0);
+uniform vec4 field_color   : source_color = vec4(0.05, 0.25, 0.7,  1.0);
+uniform vec4 ring_color    : source_color = vec4(1.0,  0.92, 0.35, 1.0);
+uniform vec4 outer_color   : source_color = vec4(0.0,  0.1,  0.4,  0.0);
+
+// --- Rings ---
+uniform int   ring_count       : hint_range(1, 6) = 4;
+uniform float ring_speed       : hint_range(0.1, 4.0) = 1.1;
+uniform float ring_width       : hint_range(0.002, 0.06) = 0.018;
+uniform float ring_spacing     : hint_range(0.05, 0.35) = 0.22;  // gap between rings
+
+// --- Juice ---
+uniform float breath_speed  : hint_range(0.1, 3.0) = 0.7;
+uniform float breath_amount : hint_range(0.0, 0.15) = 0.045;
+uniform float wobble_speed  : hint_range(0.0, 4.0) = 1.3;
+uniform float wobble_amount : hint_range(0.0, 0.04) = 0.018;
+uniform float shimmer_speed : hint_range(0.0, 6.0) = 2.5;
+uniform float time_scale    : hint_range(0.1, 3.0) = 1.0;
+
+// ── helpers ──────────────────────────────
+
+float hash(vec2 p) {
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float noise(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);
+	return mix(
+		mix(hash(i),              hash(i + vec2(1,0)), f.x),
+		mix(hash(i + vec2(0,1)),  hash(i + vec2(1,1)), f.x),
+		f.y);
+}
+
+// Signed distance to a circle edge
+float ring_sdf(float d, float r) {
+	return abs(d - r);
+}
+
+void fragment() {
+	float t = TIME * time_scale;
+
+	// UV centred at (0,0), range roughly ±0.5
+	vec2 uv = UV - 0.5;
+
+	// ── Organic wobble ───────────────────────────────────
+	// Distort UV slightly using angle-dependent noise so
+	// rings look like energy fields, not perfect circles.
+	float angle = atan(uv.y, uv.x);
+	float wobble = noise(vec2(angle * 3.0 + t * wobble_speed,
+	                          angle * 1.7 - t * wobble_speed * 0.6));
+	wobble = (wobble - 0.5) * wobble_amount * gravity_strength;
+
+	// Add a second harmonic for richer warping
+	float wobble2 = noise(vec2(angle * 6.0 - t * wobble_speed * 1.4,
+	                           t * 0.4)) * 0.5;
+	wobble2 = (wobble2 - 0.5) * wobble_amount * 0.5 * gravity_strength;
+
+	vec2 warped_uv = uv + normalize(uv + 0.0001) * (wobble + wobble2);
+	float dist = length(warped_uv);   // distance from centre (warped)
+	float dist_raw = length(uv);      // clean distance for masking
+
+	// ── Breathing ────────────────────────────────────────
+	float breath = 1.0 + sin(t * breath_speed) * breath_amount;
+	float dist_b = dist * breath;     // breathing-scaled distance
+
+	// ── Field mask  (donut between inner and outer radius) ─
+	float field_t = smoothstep(inner_radius, inner_radius + 0.04, dist_raw)
+	              * smoothstep(outer_radius, outer_radius - 0.04, dist_raw);
+	field_t *= gravity_strength;
+
+	// ── Base gradient — brighter near planet (gravity intensifies inward) ──
+	float grad = 1.0 - smoothstep(inner_radius, outer_radius, dist_b);
+	float grad_steep = pow(grad, 1.8);
+	vec4 base_col = mix(outer_color, mix(field_color, core_color, grad_steep), grad_steep);
+
+	// ── Inward rings (gravity pull: outer → inner) ────────
+	float ring_alpha = 0.0;
+	for (int i = 0; i < 6; i++) {
+		if (i >= ring_count) break;
+
+		float fi    = float(i);
+		float phase = fract(t * ring_speed * 0.28 + fi / float(ring_count));
+
+		// INWARD: ring starts at outer edge, travels toward planet
+		float r = mix(outer_radius, inner_radius, phase);
+
+		float d    = ring_sdf(dist_b, r);
+		float ring = smoothstep(ring_width, 0.0, d);
+
+		// Fade in as ring spawns at the outer edge, fade out as it
+		// reaches the planet and gets "swallowed" — sin gives a natural arc
+		float fade = sin(phase * 3.14159);
+
+		// Bright wavefront head now on the INNER (leading) side of the ring
+		// — it's being pulled, so the front glows brighter
+		float head = smoothstep(ring_width * 2.0, 0.0, d) * phase * 0.6;
+
+		ring_alpha += (ring + head) * fade * gravity_strength;
+	}
+
+	// ── Shimmer / static sparks ───────────────────────────
+	float spark_uv_scale = 18.0;
+	float spark = noise(warped_uv * spark_uv_scale + vec2(t * shimmer_speed, -t * shimmer_speed * 0.7));
+	spark += noise(warped_uv * spark_uv_scale * 2.0 - vec2(t * shimmer_speed * 0.5, t));
+	spark = pow(max(spark - 1.3, 0.0), 2.0);  // threshold + sharpen → sparse sparks
+	spark *= field_t * 2.0;
+
+	// ── Bright inner halo just outside planet body ────────
+	float halo = smoothstep(inner_radius + 0.06, inner_radius, dist_b);
+	halo *= smoothstep(inner_radius - 0.01, inner_radius + 0.02, dist_b);
+	halo = pow(halo, 1.5) * gravity_strength;
+
+	// ── Assemble ──────────────────────────────────────────
+	vec4 col = base_col * field_t;
+	col     += ring_color  * ring_alpha * field_t;
+	col     += core_color  * spark;
+	col     += core_color  * halo * 0.9;
+
+	// Alpha: field + rings + halo
+	float alpha = clamp(
+		  grad_steep * field_t * 0.75
+		+ ring_alpha * 0.95
+		+ spark * 0.8
+		+ halo * 0.85,
+		0.0, 1.0);
+
+	COLOR = vec4(col.rgb, alpha * gravity_strength);
+}
