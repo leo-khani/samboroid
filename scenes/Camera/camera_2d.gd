@@ -1,5 +1,15 @@
 extends Camera2D
 
+enum Mode { STRATEGY, FOLLOW }
+
+var current_mode: Mode = Mode.STRATEGY
+
+## Arrow key pan speed in pixels per second.
+@export var pan_speed: float = 400.0
+## How smoothly the camera lerps to the asteroid in follow mode (higher = snappier).
+@export var follow_smoothing: float = 8.0
+
+#region Shake
 ## Current shake intensity (pixels). Decays over time.
 var _trauma: float = 0.0
 ## Maximum offset in pixels for the shake.
@@ -18,6 +28,7 @@ const SHAKE_CONFIG := {
 	GlobalEnum.ShakePreset.MEDIUM: [10.0, 0.7, 1.5],
 	GlobalEnum.ShakePreset.LARGE:  [20.0, 1.0, 1.0],
 }
+#endregion
 
 
 func _ready() -> void:
@@ -25,12 +36,74 @@ func _ready() -> void:
 	_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	_noise.frequency = 1.5
 	_noise.seed = randi()
+
 	SignalHub.camera_shake.connect(_on_camera_shake)
+	SignalHub.asteroid_shot.connect(_on_asteroid_shot)
+
+	# Start in strategy mode: detach from parent transform so arrow keys control position
+	set_mode(Mode.STRATEGY)
 
 
 func _process(delta: float) -> void:
+	match current_mode:
+		Mode.STRATEGY:
+			_process_strategy(delta)
+		Mode.FOLLOW:
+			_process_follow(delta)
+
+	_process_shake(delta)
+
+
+#region Mode switching
+func set_mode(new_mode: Mode) -> void:
+	current_mode = new_mode
+	match new_mode:
+		Mode.STRATEGY:
+			# Detach from parent so position is independent
+			top_level = true
+			position_smoothing_enabled = false
+		Mode.FOLLOW:
+			# Re-attach to parent (Asteroid) so we follow it
+			top_level = false
+			offset = Vector2.ZERO
+
+
+func _on_asteroid_shot() -> void:
+	set_mode(Mode.FOLLOW)
+#endregion
+
+
+#region Strategy mode — arrow key panning
+func _process_strategy(delta: float) -> void:
+	var input_dir := Vector2.ZERO
+
+	if Input.is_action_pressed("ui_left"):
+		input_dir.x -= 1.0
+	if Input.is_action_pressed("ui_right"):
+		input_dir.x += 1.0
+	if Input.is_action_pressed("ui_up"):
+		input_dir.y -= 1.0
+	if Input.is_action_pressed("ui_down"):
+		input_dir.y += 1.0
+
+	if input_dir != Vector2.ZERO:
+		global_position += input_dir.normalized() * pan_speed * delta
+#endregion
+
+
+#region Follow mode — follow the parent (Asteroid)
+func _process_follow(delta: float) -> void:
+	# Camera is a child of Asteroid, so with top_level = false it already follows.
+	# Nothing extra needed; shake offset is applied separately.
+	pass
+#endregion
+
+
+#region Shake
+func _process_shake(delta: float) -> void:
 	if _trauma <= 0.0:
-		offset = Vector2.ZERO
+		if current_mode == Mode.STRATEGY:
+			offset = Vector2.ZERO
 		return
 
 	# Advance noise time
@@ -56,3 +129,4 @@ func _on_camera_shake(shake_preset: GlobalEnum.ShakePreset, _duration: float) ->
 	# Stack trauma additively, clamp to 1.0 for safety
 	_trauma = minf(_trauma + config[1], 1.0)
 	_decay_rate = config[2]
+#endregion

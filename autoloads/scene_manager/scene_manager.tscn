@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://ev3exjpwvvnl"]
+
+[ext_resource type="Shader" uid="uid://j78gropigb3q" path="res://shaders/glitch.gdshader" id="1_d8wwt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u6t5y"]
+shader = ExtResource("1_d8wwt")
+shader_parameter/shake_power = 0.03
+shader_parameter/shake_rate = 0.2
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 30.5
+shader_parameter/shake_color_rate = 0.01
+
+[node name="SceneManager" type="Node" unique_id=792979735]
+
+[node name="MainUI" type="CanvasLayer" parent="." unique_id=1832239683]
+
+[node name="PauseUI" type="Control" parent="MainUI" unique_id=325074077]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="MainUI/PauseUI" unique_id=96477677]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28235295)
+
+[node name="ColorRect" type="ColorRect" parent="MainUI/PauseUI" unique_id=185635661]
+material = SubResource("ShaderMaterial_u6t5y")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MainUI/PauseUI" unique_id=699018146]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainUI/PauseUI/CenterContainer" unique_id=999446777]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5058824)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 5
+theme_override_font_sizes/font_size = 64
+text = "PAUSED"

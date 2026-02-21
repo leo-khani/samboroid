@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://meigyyajnb68"]
+
+[ext_resource type="Script" uid="uid://cgox5sprhxgx8" path="res://scenes/Levels/level_manager.gd" id="1_ix3yw"]
+[ext_resource type="PackedScene" uid="uid://dg0bfx5jv3dxx" path="res://scenes/MainController/main.tscn" id="2_5hi2o"]
+[ext_resource type="PackedScene" uid="uid://bn6akaxs6gjnr" path="res://scenes/Objects/Goal/goal.tscn" id="3_jtrjk"]
+[ext_resource type="PackedScene" uid="uid://cquy5aw1vggol" path="res://scenes/Objects/Asteroid/asteroid.tscn" id="4_nf6jq"]
+[ext_resource type="PackedScene" uid="uid://lqaxhqq5yg8k" path="res://scenes/Objects/Planet/planet.tscn" id="5_c75po"]
+[ext_resource type="Shader" uid="uid://v1e8usf6dfit" path="res://shaders/space_aura.gdshader" id="6_nf6jq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c75po"]
+shader = ExtResource("6_nf6jq")
+shader_parameter/aurora_color = Color(0.84, 0.84, 0.9, 1)
+shader_parameter/background_color1 = Color(0.05, 0.1, 0.2, 1)
+shader_parameter/background_color2 = Color(0.1, 0.05, 0.2, 1)
+shader_parameter/aurora_intensity = 1.8
+shader_parameter/star_brightness = 0.8
+
+[node name="Level01" type="Node2D" unique_id=1015690530]
+script = ExtResource("1_ix3yw")
+metadata/_custom_type_script = "uid://cgox5sprhxgx8"
+
+[node name="Main" parent="." unique_id=1291832930 instance=ExtResource("2_5hi2o")]
+
+[node name="Goal" parent="Main" unique_id=771016301 instance=ExtResource("3_jtrjk")]
+position = Vector2(2, -362)
+
+[node name="Asteroid" parent="Main" unique_id=1642232687 instance=ExtResource("4_nf6jq")]
+
+[node name="Planet" parent="Main" unique_id=54183248 instance=ExtResource("5_c75po")]
+position = Vector2(274, -144)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2086935241]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=111738743]
+z_index = -50
+material = SubResource("ShaderMaterial_c75po")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

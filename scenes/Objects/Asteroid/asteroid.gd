@@ -7,9 +7,6 @@ func _integrate_forces(state):
 	# Calculate gravity manually
 	var total_gravity = Vector2.ZERO
 	var planets = get_tree().get_nodes_in_group("planets")
-
-	# DEBUG: Print how many planets were found
-	print("Planets found: ", planets.size()) 
 	
 	for planet in planets:
 		var direction = planet.global_position - global_position
@@ -21,7 +18,7 @@ func _integrate_forces(state):
 		var safe_dist = max(distance, 30.0) 
 		
 		# Inverse Square Law: F = G * M / r^2
-		var force_magnitude = G * planet.mass / (safe_dist * safe_dist)
+		var force_magnitude = G * planet.gravity_mass / (safe_dist * safe_dist)
 		
 		total_gravity += direction.normalized() * force_magnitude
 

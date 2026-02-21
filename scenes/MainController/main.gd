@@ -6,7 +6,7 @@ extends Node2D
 
 var is_dragging = false
 var start_drag_pos = Vector2.ZERO
-var launch_power_multiplier = 0.5 # Adjust for sensitivity
+var launch_power_multiplier = 2.0 # Adjust for sensitivity
 
 func _ready():
 	goal.win.connect(_on_win)
@@ -19,48 +19,53 @@ func _on_win():
 	get_tree().reload_current_scene()
 
 func _input(event):
+	return
 	# Start Drag
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		# Only shoot if the asteroid is currently frozen (not shot yet)
 		if asteroid.freeze:
 			is_dragging = true
-			start_drag_pos = event.position
-			SignalHub.emit_camera_shake(GlobalEnum.ShakePreset.SMALL, 0.3) # Shake on drag start
+			start_drag_pos = get_global_mouse_position()
 	
 	# End Drag (Shoot)
 	if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if is_dragging:
 			is_dragging = false
-			shoot_asteroid(event.position)
+			shoot_asteroid(get_global_mouse_position())
 	
-	# Update trajectory while dragging
-	if event is InputEventMouseMotion and is_dragging:
-		update_trajectory(event.position)
+	# (trajectory updated in _process for smooth continuous feedback)
 
-func shoot_asteroid(mouse_pos: Vector2):
-	# Calculate velocity vector (Direction is from Mouse to Asteroid)
-	var launch_vector = (asteroid.global_position - mouse_pos) * launch_power_multiplier
+func _process(_delta):
+	if is_dragging:
+		update_trajectory(get_global_mouse_position())
+
+func shoot_asteroid(mouse_world_pos: Vector2):
+	SignalHub.emit_camera_shake(GlobalEnum.ShakePreset.SMALL, 0.3)
+
+	# Calculate velocity vector (Direction is from mouse to asteroid = slingshot)
+	var launch_vector = (asteroid.global_position - mouse_world_pos) * launch_power_multiplier
 	
 	asteroid.freeze = false
 	asteroid.linear_velocity = launch_vector
 	trajectory_line.visible = false
+	SignalHub.emit_asteroid_shot()
 	
 	# Clear the trail
 	if asteroid.has_node("Trail"):
 		asteroid.get_node("Trail").clear_points()
 
-func update_trajectory(mouse_pos: Vector2):
+func update_trajectory(mouse_world_pos: Vector2):
 	trajectory_line.visible = true
 	trajectory_line.clear_points()
 	
 	# Simulate the path
 	var sim_pos = asteroid.global_position
-	var sim_vel = (asteroid.global_position - mouse_pos) * launch_power_multiplier
+	var sim_vel = (asteroid.global_position - mouse_world_pos) * launch_power_multiplier
 	var dt = get_physics_process_delta_time()
 	
 	# Simulate 150 steps into the future
 	for i in range(150):
-		trajectory_line.add_point(sim_pos)
+		trajectory_line.add_point(trajectory_line.to_local(sim_pos))
 		
 		# --- SIMULATE PHYSICS STEP ---
 		# 1. Apply Gravity
@@ -70,7 +75,7 @@ func update_trajectory(mouse_pos: Vector2):
 			var dir = planet.global_position - sim_pos
 			var dist = dir.length()
 			if dist < 10: dist = 10
-			var f = 500.0 * planet.mass / (dist * dist)
+			var f = 500.0 * planet.gravity_mass / (dist * dist)
 			gravity_force += dir.normalized() * f
 		
 		sim_vel += gravity_force * dt

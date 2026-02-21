@@ -1,27 +1,9 @@
 [gd_scene format=3 uid="uid://dg0bfx5jv3dxx"]
 
 [ext_resource type="Script" uid="uid://c804btgg2ey07" path="res://scenes/MainController/main.gd" id="1_mou8w"]
-[ext_resource type="PackedScene" uid="uid://cquy5aw1vggol" path="res://scenes/Objects/Asteroid/asteroid.tscn" id="1_uv0m4"]
-[ext_resource type="PackedScene" uid="uid://lqaxhqq5yg8k" path="res://scenes/Objects/Planet/planet.tscn" id="3_62eel"]
-[ext_resource type="PackedScene" uid="uid://bn6akaxs6gjnr" path="res://scenes/Objects/Goal/goal.tscn" id="4_c7h83"]
 
 [node name="Main" type="Node2D" unique_id=1291832930]
 script = ExtResource("1_mou8w")
 
 [node name="TrajectoryLine" type="Line2D" parent="." unique_id=535532836]
 width = 2.0
-
-[node name="Planet" parent="." unique_id=54183248 instance=ExtResource("3_62eel")]
-position = Vector2(47, -37)
-mass = 500000000000000.0
-
-[node name="Planet2" parent="." unique_id=372655623 instance=ExtResource("3_62eel")]
-position = Vector2(-388, -918)
-
-[node name="Planet3" parent="." unique_id=394718327 instance=ExtResource("3_62eel")]
-position = Vector2(425, -748)
-
-[node name="Goal" parent="." unique_id=771016301 instance=ExtResource("4_c7h83")]
-position = Vector2(31, -673)
-
-[node name="Asteroid" parent="." unique_id=1642232687 instance=ExtResource("1_uv0m4")]
