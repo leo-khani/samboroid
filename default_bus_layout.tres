@@ -1,0 +1,54 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://cpedvx0tle4xj"]
+
+[sub_resource type="AudioEffectEQ6" id="AudioEffectEQ6_j3pel"]
+resource_name = "EQ6"
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
+resource_name = "Reverb"
+wet = 0.4
+
+[sub_resource type="AudioEffectPanner" id="AudioEffectPanner_j3pel"]
+resource_name = "Panner"
+
+[sub_resource type="AudioEffectPitchShift" id="AudioEffectPitchShift_j3pel"]
+resource_name = "PitchShift"
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_j3pel"]
+resource_name = "LowPassFilter"
+cutoff_hz = 400.0
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_j3pel"]
+resource_name = "Compressor"
+
+[resource]
+bus/0/volume_db = -15.794972
+bus/1/name = &"Music"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/2/name = &"SFX"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0
+bus/2/send = &"Master"
+bus/3/name = &"MusicPause"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = 0.0
+bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectEQ6_j3pel")
+bus/3/effect/0/enabled = false
+bus/3/effect/1/effect = SubResource("AudioEffectReverb_j3pel")
+bus/3/effect/1/enabled = true
+bus/3/effect/2/effect = SubResource("AudioEffectPanner_j3pel")
+bus/3/effect/2/enabled = false
+bus/3/effect/3/effect = SubResource("AudioEffectPitchShift_j3pel")
+bus/3/effect/3/enabled = false
+bus/3/effect/4/effect = SubResource("AudioEffectLowPassFilter_j3pel")
+bus/3/effect/4/enabled = true
+bus/3/effect/5/effect = SubResource("AudioEffectCompressor_j3pel")
+bus/3/effect/5/enabled = true

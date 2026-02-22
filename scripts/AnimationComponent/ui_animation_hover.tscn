@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://un1nboowq4mi"]
+
+[ext_resource type="Script" uid="uid://cwyo51di2htfx" path="res://scripts/AnimationComponent/ui_animation_hover.gd" id="1_r2mtt"]
+
+[node name="UIAnimationHover" type="Node" unique_id=1691796554]
+script = ExtResource("1_r2mtt")

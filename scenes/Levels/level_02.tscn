@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://cip5d1h434ik0"]
+
+[ext_resource type="Script" uid="uid://cgox5sprhxgx8" path="res://scenes/Levels/level_manager.gd" id="1_ucbth"]
+[ext_resource type="PackedScene" uid="uid://dg0bfx5jv3dxx" path="res://scenes/MainController/main.tscn" id="2_ai3hb"]
+[ext_resource type="PackedScene" uid="uid://bn6akaxs6gjnr" path="res://scenes/Objects/Goal/goal.tscn" id="3_2ufai"]
+[ext_resource type="Shader" uid="uid://v1e8usf6dfit" path="res://shaders/space_aura.gdshader" id="4_t4csd"]
+[ext_resource type="PackedScene" uid="uid://cp24sbe4dx70r" path="res://scenes/UI/UITimer/ui_timer.tscn" id="5_pjkde"]
+[ext_resource type="PackedScene" uid="uid://lqaxhqq5yg8k" path="res://scenes/Objects/Planet/planet.tscn" id="6_ai3hb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c75po"]
+shader = ExtResource("4_t4csd")
+shader_parameter/aurora_color = Color(0.84, 0.84, 0.9, 1)
+shader_parameter/background_color1 = Color(0.05, 0.1, 0.2, 1)
+shader_parameter/background_color2 = Color(0.1, 0.05, 0.2, 1)
+shader_parameter/aurora_intensity = 1.8
+shader_parameter/star_brightness = 0.8
+
+[node name="Level01" type="Node2D" unique_id=1015690530]
+script = ExtResource("1_ucbth")
+current_level = 1
+metadata/_custom_type_script = "uid://cgox5sprhxgx8"
+
+[node name="Main" parent="." unique_id=1291832930 instance=ExtResource("2_ai3hb")]
+
+[node name="Goal" parent="Main" unique_id=771016301 instance=ExtResource("3_2ufai")]
+position = Vector2(-222, -188)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2086935241]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=111738743]
+z_index = -50
+material = SubResource("ShaderMaterial_c75po")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="UITimer" parent="CanvasLayer" unique_id=806839423 instance=ExtResource("5_pjkde")]
+
+[node name="Planet" parent="." unique_id=54183248 instance=ExtResource("6_ai3hb")]
+position = Vector2(-90, -89)
+mass = 300.0
+
+[node name="Planet2" parent="." unique_id=897333992 instance=ExtResource("6_ai3hb")]
+position = Vector2(-278, -62)
+mass = 30.0
+
+[node name="Planet3" parent="." unique_id=358729601 instance=ExtResource("6_ai3hb")]
+position = Vector2(-85, -211)
+mass = 30.0

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bj4jadjr03p7e"]
+
+[ext_resource type="Script" uid="uid://fk0gds3xfff0" path="res://autoloads/audio_manager/audio_manager.gd" id="1_n7h83"]
+[ext_resource type="AudioStream" uid="uid://dkiuxkuygjsqr" path="res://audios/Silent Starfields.mp3" id="2_3n7gt"]
+
+[node name="AudioManager" type="Node" unique_id=1133553451]
+process_mode = 3
+script = ExtResource("1_n7h83")
+music_list = Array[AudioStream]([ExtResource("2_3n7gt")])
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=2072726644]
+max_polyphony = 5
+bus = &"Music"
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1093637336]
+stream = ExtResource("2_3n7gt")
+bus = &"MusicPause"

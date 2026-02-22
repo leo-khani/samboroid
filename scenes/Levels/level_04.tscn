@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://cf0kko28vvl57"]
+
+[ext_resource type="Script" uid="uid://cgox5sprhxgx8" path="res://scenes/Levels/level_manager.gd" id="1_ge3pt"]
+[ext_resource type="PackedScene" uid="uid://dg0bfx5jv3dxx" path="res://scenes/MainController/main.tscn" id="2_1x6l5"]
+[ext_resource type="PackedScene" uid="uid://bn6akaxs6gjnr" path="res://scenes/Objects/Goal/goal.tscn" id="3_so0k7"]
+[ext_resource type="PackedScene" uid="uid://lqaxhqq5yg8k" path="res://scenes/Objects/Planet/planet.tscn" id="4_1x6l5"]
+[ext_resource type="Shader" uid="uid://v1e8usf6dfit" path="res://shaders/space_aura.gdshader" id="4_tdxlr"]
+[ext_resource type="PackedScene" uid="uid://cp24sbe4dx70r" path="res://scenes/UI/UITimer/ui_timer.tscn" id="5_et2mx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c75po"]
+shader = ExtResource("4_tdxlr")
+shader_parameter/aurora_color = Color(0.84, 0.84, 0.9, 1)
+shader_parameter/background_color1 = Color(0.05, 0.1, 0.2, 1)
+shader_parameter/background_color2 = Color(0.1, 0.05, 0.2, 1)
+shader_parameter/aurora_intensity = 1.8
+shader_parameter/star_brightness = 0.8
+
+[node name="Level01" type="Node2D" unique_id=1015690530]
+script = ExtResource("1_ge3pt")
+current_level = 3
+metadata/_custom_type_script = "uid://cgox5sprhxgx8"
+
+[node name="Main" parent="." unique_id=1291832930 instance=ExtResource("2_1x6l5")]
+
+[node name="Goal" parent="Main" unique_id=771016301 instance=ExtResource("3_so0k7")]
+position = Vector2(-331, -2)
+
+[node name="Planet" parent="Main" unique_id=54183248 instance=ExtResource("4_1x6l5")]
+position = Vector2(-143, 1)
+mass = 300.0
+gravity_field_multiplier = 2.0
+
+[node name="Planet2" parent="Main" unique_id=1291410354 instance=ExtResource("4_1x6l5")]
+position = Vector2(-265, -181)
+
+[node name="Planet3" parent="Main" unique_id=131376488 instance=ExtResource("4_1x6l5")]
+position = Vector2(-398, 0)
+
+[node name="Planet4" parent="Main" unique_id=501949444 instance=ExtResource("4_1x6l5")]
+position = Vector2(-231, 3)
+mass = 100.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2086935241]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=111738743]
+z_index = -50
+material = SubResource("ShaderMaterial_c75po")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="UITimer" parent="CanvasLayer" unique_id=806839423 instance=ExtResource("5_et2mx")]

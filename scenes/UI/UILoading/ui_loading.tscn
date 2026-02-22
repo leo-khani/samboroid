@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://bkev2bajanxc8"]
+
+[ext_resource type="Script" uid="uid://d0a4ef637i0ux" path="res://scenes/UI/UILoading/ui_loading.gd" id="1_5x5kk"]
+[ext_resource type="Shader" uid="uid://dchjrk200wg5v" path="res://shaders/double_dither.gdshader" id="2_xvb4p"]
+
+[sub_resource type="Animation" id="Animation_xvb4p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.000000095]
+}
+
+[sub_resource type="Animation" id="Animation_qibml"]
+resource_name = "animate_in"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3333333, 0.56666666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [2.000000095, 1.0000000475, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_efrkv"]
+_data = {
+&"RESET": SubResource("Animation_xvb4p"),
+&"animate_in": SubResource("Animation_qibml")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qibml"]
+shader = ExtResource("2_xvb4p")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/radius = 2.000000095
+shader_parameter/pixel_size = 8.0
+shader_parameter/resolution = Vector2(400, 400)
+shader_parameter/dither_offset = Vector2(2, 0)
+shader_parameter/bayer_size = 2
+shader_parameter/interpolate = true
+shader_parameter/invert = true
+shader_parameter/falloff = 2.5
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[node name="UILoading" type="CanvasLayer" unique_id=392507267]
+layer = 999
+script = ExtResource("1_5x5kk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1924417696]
+libraries/ = SubResource("AnimationLibrary_efrkv")
+autoplay = &"animate_in"
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=767654805]
+material = SubResource("ShaderMaterial_qibml")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

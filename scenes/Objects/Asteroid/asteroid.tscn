@@ -4,18 +4,78 @@
 [ext_resource type="Texture2D" uid="uid://d0bn24mk6l48i" path="res://assets/Asteroid.png" id="2_e5orn"]
 [ext_resource type="PackedScene" uid="uid://cprg12d5j2uji" path="res://scenes/Camera/camera_2d.tscn" id="3_4o5hi"]
 
+[sub_resource type="Curve" id="Curve_dynuq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7804878, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5orn"]
-radius = 7.0
+radius = 3.0
+
+[sub_resource type="Curve" id="Curve_4o5hi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.73780483, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_4o5hi"]
+offsets = PackedFloat32Array(0.8509934, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_dynuq"]
+offsets = PackedFloat32Array(0.59933776, 0.8642384)
+colors = PackedColorArray(1, 0.47058824, 0, 1, 1, 1, 0, 1)
 
 [node name="Asteroid" type="RigidBody2D" unique_id=1642232687 groups=["asteroid"]]
+z_index = 1
 collision_mask = 0
 script = ExtResource("1_e5orn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=386026638]
-shape = SubResource("CircleShape2D_e5orn")
+[node name="TailParticle" type="CPUParticles2D" parent="." unique_id=399895701]
+emitting = false
+amount = 64
+lifetime = 2.0
+speed_scale = 5.0
+emission_shape = 1
+emission_sphere_radius = 2.5
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+scale_amount_min = 0.5
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_dynuq")
+color = Color(1, 0.4745098, 0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2123961690]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_e5orn")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=386026638]
+position = Vector2(-1, 1)
+shape = SubResource("CircleShape2D_e5orn")
+
 [node name="Camera2D" parent="." unique_id=1276765613 instance=ExtResource("3_4o5hi")]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=349558711]
+emitting = false
+amount = 200
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 5.85
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 160.0
+orbit_velocity_max = 0.2
+linear_accel_min = 10.0
+linear_accel_max = 10.0
+radial_accel_min = 5.0
+radial_accel_max = 5.0
+damping_min = 50.0
+damping_max = 120.0
+angle_max = 720.0
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_4o5hi")
+color = Color(1, 0.5803922, 0, 1)
+color_ramp = SubResource("Gradient_4o5hi")
+color_initial_ramp = SubResource("Gradient_dynuq")

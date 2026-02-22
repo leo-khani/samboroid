@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://cgox5sprhxgx8" path="res://scenes/Levels/level_manager.gd" id="1_ix3yw"]
 [ext_resource type="PackedScene" uid="uid://dg0bfx5jv3dxx" path="res://scenes/MainController/main.tscn" id="2_5hi2o"]
 [ext_resource type="PackedScene" uid="uid://bn6akaxs6gjnr" path="res://scenes/Objects/Goal/goal.tscn" id="3_jtrjk"]
-[ext_resource type="PackedScene" uid="uid://cquy5aw1vggol" path="res://scenes/Objects/Asteroid/asteroid.tscn" id="4_nf6jq"]
 [ext_resource type="PackedScene" uid="uid://lqaxhqq5yg8k" path="res://scenes/Objects/Planet/planet.tscn" id="5_c75po"]
+[ext_resource type="PackedScene" uid="uid://cp24sbe4dx70r" path="res://scenes/UI/UITimer/ui_timer.tscn" id="5_nf6jq"]
 [ext_resource type="Shader" uid="uid://v1e8usf6dfit" path="res://shaders/space_aura.gdshader" id="6_nf6jq"]
+[ext_resource type="Script" uid="uid://cwyo51di2htfx" path="res://scripts/AnimationComponent/ui_animation_hover.gd" id="7_c75po"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c75po"]
 shader = ExtResource("6_nf6jq")
@@ -17,17 +18,15 @@ shader_parameter/star_brightness = 0.8
 
 [node name="Level01" type="Node2D" unique_id=1015690530]
 script = ExtResource("1_ix3yw")
+max_mass_fluid = 50.0
+mass_fluid = 50.0
 metadata/_custom_type_script = "uid://cgox5sprhxgx8"
 
 [node name="Main" parent="." unique_id=1291832930 instance=ExtResource("2_5hi2o")]
 
 [node name="Goal" parent="Main" unique_id=771016301 instance=ExtResource("3_jtrjk")]
-position = Vector2(2, -362)
-
-[node name="Asteroid" parent="Main" unique_id=1642232687 instance=ExtResource("4_nf6jq")]
-
-[node name="Planet" parent="Main" unique_id=54183248 instance=ExtResource("5_c75po")]
-position = Vector2(274, -144)
+position = Vector2(245, 0)
+scale = Vector2(1.8399999, 1.8399999)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2086935241]
 layer = -1
@@ -41,3 +40,61 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="UITimer" parent="CanvasLayer" unique_id=806839423 instance=ExtResource("5_nf6jq")]
+
+[node name="Planet" parent="." unique_id=54183248 instance=ExtResource("5_c75po")]
+position = Vector2(152, -1)
+
+[node name="Planet2" parent="." unique_id=455900539 instance=ExtResource("5_c75po")]
+position = Vector2(321, 127)
+
+[node name="Planet3" parent="." unique_id=1569807041 instance=ExtResource("5_c75po")]
+position = Vector2(0, 103)
+mass = 80.0
+
+[node name="Planet4" parent="." unique_id=2144029815 instance=ExtResource("5_c75po")]
+position = Vector2(210, 98)
+mass = 80.0
+
+[node name="Label" type="Label" parent="." unique_id=1862263155]
+offset_left = 189.0
+offset_top = -71.0
+offset_right = 307.0
+offset_bottom = -54.0
+text = "You Must Reach Here!"
+
+[node name="UIAnimationComponent" type="Node" parent="Label" unique_id=1192631971]
+script = ExtResource("7_c75po")
+animation_type = 4
+duration = 1.0
+loop = true
+metadata/_custom_type_script = "uid://cwyo51di2htfx"
+
+[node name="Label2" type="Label" parent="." unique_id=252462726]
+offset_left = -124.0
+offset_top = 132.0
+offset_right = 125.0
+offset_bottom = 149.0
+text = "[Right-Click] to take matter from the planet"
+
+[node name="UIAnimationComponent" type="Node" parent="Label2" unique_id=1351194133]
+script = ExtResource("7_c75po")
+animation_type = 4
+duration = 1.0
+loop = true
+metadata/_custom_type_script = "uid://cwyo51di2htfx"
+
+[node name="Label3" type="Label" parent="." unique_id=1166276323]
+offset_left = 197.0
+offset_top = 146.0
+offset_right = 446.0
+offset_bottom = 163.0
+text = "[Left-Click] to put matter onto the planet"
+
+[node name="UIAnimationComponent" type="Node" parent="Label3" unique_id=1795030648]
+script = ExtResource("7_c75po")
+animation_type = 4
+duration = 1.0
+loop = true
+metadata/_custom_type_script = "uid://cwyo51di2htfx"

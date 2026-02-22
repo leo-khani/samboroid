@@ -39,6 +39,8 @@ func _ready() -> void:
 
 	SignalHub.camera_shake.connect(_on_camera_shake)
 	SignalHub.asteroid_shot.connect(_on_asteroid_shot)
+	#SignalHub.game_state_changed.connect(_on_asteroid_shot)
+
 
 	# Start in strategy mode: detach from parent transform so arrow keys control position
 	set_mode(Mode.STRATEGY)
@@ -48,7 +50,8 @@ func _process(delta: float) -> void:
 	match current_mode:
 		Mode.STRATEGY:
 			_process_strategy(delta)
-		Mode.FOLLOW:
+		_:
+			offset = Vector2.ZERO  # Reset any manual offset; shake will be applied separately
 			_process_follow(delta)
 
 	_process_shake(delta)
@@ -62,10 +65,12 @@ func set_mode(new_mode: Mode) -> void:
 			# Detach from parent so position is independent
 			top_level = true
 			position_smoothing_enabled = false
-		Mode.FOLLOW:
+		_:
+			print("Switching to FOLLOW mode")
 			# Re-attach to parent (Asteroid) so we follow it
 			top_level = false
 			offset = Vector2.ZERO
+			position = Vector2.ZERO
 
 
 func _on_asteroid_shot() -> void:
@@ -77,13 +82,13 @@ func _on_asteroid_shot() -> void:
 func _process_strategy(delta: float) -> void:
 	var input_dir := Vector2.ZERO
 
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("camera_left"):
 		input_dir.x -= 1.0
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("camera_right"):
 		input_dir.x += 1.0
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("camera_up"):
 		input_dir.y -= 1.0
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("camera_down"):
 		input_dir.y += 1.0
 
 	if input_dir != Vector2.ZERO:
@@ -102,8 +107,7 @@ func _process_follow(delta: float) -> void:
 #region Shake
 func _process_shake(delta: float) -> void:
 	if _trauma <= 0.0:
-		if current_mode == Mode.STRATEGY:
-			offset = Vector2.ZERO
+		offset = Vector2.ZERO
 		return
 
 	# Advance noise time

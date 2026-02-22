@@ -1,10 +1,11 @@
-class_name PlanetStats extends Node
+class_name PlanetStats extends Resource
 
-var planet_type: GlobalEnum.PlanetType = GlobalEnum.PlanetType.ROCKY
-var planet_scene: PackedScene
-var planet_radius: float
+@export var planet_type: GlobalEnum.PlanetType = GlobalEnum.PlanetType.ROCKY
 
-func _init(_type: GlobalEnum.PlanetType, _scene: PackedScene, _radius: float):
-	planet_type = _type
-	planet_scene = _scene
-	planet_radius = _radius
+## Derived automatically from planet_type via Data.planet_textures.
+var planet_texture: Texture2D:
+	get:
+		var textures: Array = GlobalData.planet_textures.get(planet_type, [])
+		if textures.is_empty():
+			return null
+		return textures.pick_random()

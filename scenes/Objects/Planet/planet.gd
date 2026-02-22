@@ -7,12 +7,14 @@ class_name Planet extends StaticBody2D
 
 @onready var selection_area_collision_shape_2d: CollisionShape2D = $SelectionArea/SelectionAreaCollisionShape2D
 
+
+@export var stats: PlanetStats
 @export var rotation_speed: float = 1.0
 @export var hover_outline_color: Color = Color(1, 1, 1, 0.8)
 @export var hover_outline_thickness: float = 3.0
 
 ## The planet's mass (display value). Radius is derived from this automatically.
-@export var mass: float = 200.0:
+@export var mass: float = 50.0:
 	set(value):
 		mass = value
 		_update_planet()
@@ -24,7 +26,7 @@ class_name Planet extends StaticBody2D
 @export var gravity_field_multiplier: float = 5.0
 
 ## Multiplier applied to mass for gravity calculations (gameplay tuning).
-const GRAVITY_MASS_SCALE := 100.0
+const GRAVITY_MASS_SCALE := 40.0
 
 ## Computed radius — derived from mass, not set directly.
 var radius: float = 0.0
@@ -42,11 +44,16 @@ var base_scale: Vector2 = Vector2.ONE
 var tween: Tween = null
 var outline_tween: Tween = null
 var scale_tween: Tween = null
+var rotate_tween: Tween = null
+var shake_tween: Tween = null
 
 func _ready():
 	_update_planet()
-	animate_planet()
 	base_scale = sprite_2d.scale
+	sprite_2d.texture = stats.planet_texture
+	animate_planet()
+
+	
 
 
 func add_mass(amount: float):
@@ -80,10 +87,41 @@ func _update_planet():
 	sprite_2d.scale = Vector2.ONE * (radius * 2 / sprite_size)
 
 	# 4. Selection area — slightly larger than the visual radius for better UX
-	var selection_radius = radius * 1.5
+	var selection_radius = radius
 	if not selection_area_collision_shape_2d.shape is CircleShape2D:
 		selection_area_collision_shape_2d.shape = CircleShape2D.new()
 	selection_area_collision_shape_2d.shape.radius = selection_radius
+
+	base_scale = sprite_2d.scale
+
+	animate_shake()
+
+
+func animate_shake(intensity: float = 2.0, duration: float = 0.2):
+	if not is_node_ready():
+		return
+
+	if shake_tween:
+		shake_tween.kill()
+
+	shake_tween = create_tween()
+	
+	# We calculate how many "vibes" we want in the given duration
+	var shake_count = 10 
+	var speed = duration / shake_count
+
+	for i in range(shake_count):
+		# Calculate a decaying intensity so it gets smaller over time
+		var current_intensity = intensity * (1.0 - float(i) / shake_count)
+		var target_pos = Vector2(
+			randf_range(-current_intensity, current_intensity),
+			randf_range(-current_intensity, current_intensity)
+		)
+		
+		shake_tween.tween_property(sprite_2d, "position", target_pos, speed)
+
+	# Always return to center at the end
+	shake_tween.tween_property(sprite_2d, "position", Vector2.ZERO, speed)
 
 
 func set_outline(is_active: bool):
@@ -106,11 +144,11 @@ func set_outline(is_active: bool):
 
 
 func animate_planet():
-	if tween:
-		tween.kill()
+	if rotate_tween:
+		rotate_tween.kill()
 	
-	tween = create_tween().set_loops()
-	tween.tween_property(sprite_2d, "rotation_degrees", rotation_degrees + 360, 120.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	rotate_tween = create_tween().set_loops()
+	rotate_tween.tween_property(sprite_2d, "rotation_degrees", 360.0 * rotation_speed + randf_range(5.0, 10.0), 60.0).as_relative()
 
 
 func _on_selection_area_mouse_entered():
