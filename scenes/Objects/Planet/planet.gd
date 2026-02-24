@@ -4,7 +4,6 @@ class_name Planet extends StaticBody2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var gravity_field: ColorRect = $GravityField
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-
 @onready var selection_area_collision_shape_2d: CollisionShape2D = $SelectionArea/SelectionAreaCollisionShape2D
 
 
@@ -127,7 +126,7 @@ func animate_shake(intensity: float = 2.0, duration: float = 0.2):
 func set_outline(is_active: bool):
 	var outline_thickness = hover_outline_thickness if is_active else 0.0
 	var shader_material = sprite_2d.material
-	var scale_factor = 1.1 * base_scale if is_active else base_scale
+	var scale_factor = 1.2 * base_scale if is_active else base_scale
 
 	if outline_tween:
 		outline_tween.kill()

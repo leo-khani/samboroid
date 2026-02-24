@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cp24sbe4dx70r" path="res://scenes/UI/UITimer/ui_timer.tscn" id="5_nf6jq"]
 [ext_resource type="Shader" uid="uid://v1e8usf6dfit" path="res://shaders/space_aura.gdshader" id="6_nf6jq"]
 [ext_resource type="Script" uid="uid://cwyo51di2htfx" path="res://scripts/AnimationComponent/ui_animation_hover.gd" id="7_c75po"]
+[ext_resource type="PackedScene" uid="uid://v4tegxn41t8j" path="res://scenes/OrbitalMovement/orbital_movment.tscn" id="7_hv8s7"]
+[ext_resource type="PackedScene" uid="uid://bbof64ek5dwyy" path="res://scenes/Objects/Moon/moon.tscn" id="8_mulyv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c75po"]
 shader = ExtResource("6_nf6jq")
@@ -15,6 +17,12 @@ shader_parameter/background_color1 = Color(0.05, 0.1, 0.2, 1)
 shader_parameter/background_color2 = Color(0.1, 0.05, 0.2, 1)
 shader_parameter/aurora_intensity = 1.8
 shader_parameter/star_brightness = 0.8
+
+[sub_resource type="Curve2D" id="Curve2D_ymgts"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 49.759235, 4.900857, 0, 0, 0, 0, 49.03926, 9.754517, 0, 0, 0, 0, 47.84702, 14.514234, 0, 0, 0, 0, 46.193974, 19.13417, 0, 0, 0, 0, 44.096066, 23.569838, 0, 0, 0, 0, 41.57348, 27.778513, 0, 0, 0, 0, 38.65052, 31.719664, 0, 0, 0, 0, 35.35534, 35.35534, 0, 0, 0, 0, 31.719664, 38.65052, 0, 0, 0, 0, 27.778513, 41.57348, 0, 0, 0, 0, 23.569838, 44.096066, 0, 0, 0, 0, 19.13417, 46.193974, 0, 0, 0, 0, 14.514234, 47.84702, 0, 0, 0, 0, 9.754517, 49.03926, 0, 0, 0, 0, 4.900857, 49.759235, 0, 0, 0, 0, 3.0615159e-15, 50, 0, 0, 0, 0, -4.900857, 49.759235, 0, 0, 0, 0, -9.754517, 49.03926, 0, 0, 0, 0, -14.514234, 47.84702, 0, 0, 0, 0, -19.13417, 46.193974, 0, 0, 0, 0, -23.569838, 44.096066, 0, 0, 0, 0, -27.778513, 41.57348, 0, 0, 0, 0, -31.719664, 38.65052, 0, 0, 0, 0, -35.35534, 35.35534, 0, 0, 0, 0, -38.65052, 31.719664, 0, 0, 0, 0, -41.57348, 27.778513, 0, 0, 0, 0, -44.096066, 23.569838, 0, 0, 0, 0, -46.193974, 19.13417, 0, 0, 0, 0, -47.84702, 14.514234, 0, 0, 0, 0, -49.03926, 9.754517, 0, 0, 0, 0, -49.759235, 4.900857, 0, 0, 0, 0, -50, 6.1230318e-15, 0, 0, 0, 0, -49.759235, -4.900857, 0, 0, 0, 0, -49.03926, -9.754517, 0, 0, 0, 0, -47.84702, -14.514234, 0, 0, 0, 0, -46.193974, -19.13417, 0, 0, 0, 0, -44.096066, -23.569838, 0, 0, 0, 0, -41.57348, -27.778513, 0, 0, 0, 0, -38.65052, -31.719664, 0, 0, 0, 0, -35.35534, -35.35534, 0, 0, 0, 0, -31.719664, -38.65052, 0, 0, 0, 0, -27.778513, -41.57348, 0, 0, 0, 0, -23.569838, -44.096066, 0, 0, 0, 0, -19.13417, -46.193974, 0, 0, 0, 0, -14.514234, -47.84702, 0, 0, 0, 0, -9.754517, -49.03926, 0, 0, 0, 0, -4.900857, -49.759235, 0, 0, 0, 0, -9.184548e-15, -50, 0, 0, 0, 0, 4.900857, -49.759235, 0, 0, 0, 0, 9.754517, -49.03926, 0, 0, 0, 0, 14.514234, -47.84702, 0, 0, 0, 0, 19.13417, -46.193974, 0, 0, 0, 0, 23.569838, -44.096066, 0, 0, 0, 0, 27.778513, -41.57348, 0, 0, 0, 0, 31.719664, -38.65052, 0, 0, 0, 0, 35.35534, -35.35534, 0, 0, 0, 0, 38.65052, -31.719664, 0, 0, 0, 0, 41.57348, -27.778513, 0, 0, 0, 0, 44.096066, -23.569838, 0, 0, 0, 0, 46.193974, -19.13417, 0, 0, 0, 0, 47.84702, -14.514234, 0, 0, 0, 0, 49.03926, -9.754517, 0, 0, 0, 0, 49.759235, -4.900857)
+}
+point_count = 64
 
 [node name="Level01" type="Node2D" unique_id=1015690530]
 script = ExtResource("1_ix3yw")
@@ -45,6 +53,18 @@ mouse_filter = 2
 
 [node name="Planet" parent="." unique_id=54183248 instance=ExtResource("5_c75po")]
 position = Vector2(152, -1)
+
+[node name="OrbitalMovment" parent="Planet" unique_id=1791892549 instance=ExtResource("7_hv8s7")]
+curve = SubResource("Curve2D_ymgts")
+target = NodePath("Moon")
+orbit_around = NodePath("..")
+radius = 50.0
+
+[node name="Moon" parent="Planet/OrbitalMovment" unique_id=659219324 instance=ExtResource("8_mulyv")]
+position = Vector2(-17.869171, 46.69781)
+rotation_speed = 10.0
+radius = 0.0
+current_scale = 1.0
 
 [node name="Planet2" parent="." unique_id=455900539 instance=ExtResource("5_c75po")]
 position = Vector2(321, 127)

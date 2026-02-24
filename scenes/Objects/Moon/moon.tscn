@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bbof64ek5dwyy"]
+
+[ext_resource type="Script" uid="uid://jdhm1huxbh8w" path="res://scenes/Objects/Moon/moon.gd" id="1_50j3d"]
+[ext_resource type="Texture2D" uid="uid://iw365hoyfvms" path="res://assets/Moon/Moon_01.png" id="2_6e70q"]
+[ext_resource type="Script" uid="uid://bwoyrv7pxfdxv" path="res://scenes/Area/KillArea/kill_area.gd" id="2_a2yxh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ke2wf"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6e70q"]
+radius = 4.0
+
+[node name="Moon" type="StaticBody2D" unique_id=659219324]
+collision_mask = 0
+script = ExtResource("1_50j3d")
+radius = 4.0
+current_scale = 0.08
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1813852011]
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("2_6e70q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1480087709]
+shape = SubResource("CircleShape2D_ke2wf")
+
+[node name="KillArea" type="Area2D" parent="." unique_id=1503851900]
+script = ExtResource("2_a2yxh")
+metadata/_custom_type_script = "uid://bwoyrv7pxfdxv"
+
+[node name="KillAreaCollisionShape2D" type="CollisionShape2D" parent="KillArea" unique_id=1800440554]
+shape = SubResource("CircleShape2D_6e70q")
+debug_color = Color(0.92879486, 0.20479572, 0.44097313, 0.41960785)

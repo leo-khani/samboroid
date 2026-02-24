@@ -92,7 +92,8 @@ end_cap_mode = 2
 
 [node name="UIController" type="CanvasLayer" parent="." unique_id=1477486651]
 
-[node name="Control" type="Control" parent="UIController" unique_id=436357681]
+[node name="LaunchControls" type="Control" parent="UIController" unique_id=436357681]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 3
 anchors_preset = 12
@@ -103,8 +104,9 @@ offset_top = -164.0
 offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIController/Control" unique_id=1228555490]
+[node name="VBoxContainer" type="VBoxContainer" parent="UIController/LaunchControls" unique_id=1228555490]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -117,33 +119,33 @@ offset_bottom = -39.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="UIController/Control/VBoxContainer" unique_id=1233105978]
+[node name="HBoxContainer2" type="HBoxContainer" parent="UIController/LaunchControls/VBoxContainer" unique_id=1233105978]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UIController/Control/VBoxContainer/HBoxContainer2" unique_id=1347823911]
+[node name="Label" type="Label" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer2" unique_id=1347823911]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Matter Fluid"
 
-[node name="MaterFluidLabel" type="Label" parent="UIController/Control/VBoxContainer/HBoxContainer2" unique_id=2092597262]
+[node name="MaterFluidLabel" type="Label" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer2" unique_id=2092597262]
 unique_name_in_owner = true
 layout_mode = 2
 text = "10 / 10"
 
-[node name="MaterFluidProgressBar" type="ProgressBar" parent="UIController/Control/VBoxContainer" unique_id=419805328]
+[node name="MaterFluidProgressBar" type="ProgressBar" parent="UIController/LaunchControls/VBoxContainer" unique_id=419805328]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_sjsdx")
 show_percentage = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UIController/Control/VBoxContainer" unique_id=802114584]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIController/LaunchControls/VBoxContainer" unique_id=802114584]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LeftBtn" type="Button" parent="UIController/Control/VBoxContainer/HBoxContainer" unique_id=2102978598]
+[node name="LeftBtn" type="Button" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer" unique_id=2102978598]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -159,7 +161,7 @@ shortcut_in_tooltip = false
 icon = SubResource("AtlasTexture_t4prj")
 icon_alignment = 1
 
-[node name="UIAnimationComponent" type="Node" parent="UIController/Control/VBoxContainer/HBoxContainer/LeftBtn" unique_id=732237369]
+[node name="UIAnimationComponent" type="Node" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer/LeftBtn" unique_id=732237369]
 script = ExtResource("5_t4prj")
 animation_type = 1
 trigger = 1
@@ -169,7 +171,7 @@ ease_type = 3
 trans_type = 1
 metadata/_custom_type_script = "uid://cwyo51di2htfx"
 
-[node name="LunchBtn" type="Button" parent="UIController/Control/VBoxContainer/HBoxContainer" unique_id=546661944]
+[node name="LunchBtn" type="Button" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer" unique_id=546661944]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -186,7 +188,7 @@ shortcut_feedback = false
 shortcut_in_tooltip = false
 text = "LAUNCH"
 
-[node name="UIAnimationComponent" type="Node" parent="UIController/Control/VBoxContainer/HBoxContainer/LunchBtn" unique_id=324313495]
+[node name="UIAnimationComponent" type="Node" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer/LunchBtn" unique_id=324313495]
 script = ExtResource("5_t4prj")
 animation_type = 1
 trigger = 1
@@ -196,7 +198,7 @@ ease_type = 3
 trans_type = 1
 metadata/_custom_type_script = "uid://cwyo51di2htfx"
 
-[node name="RightBtn" type="Button" parent="UIController/Control/VBoxContainer/HBoxContainer" unique_id=585220970]
+[node name="RightBtn" type="Button" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer" unique_id=585220970]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -212,7 +214,7 @@ shortcut_in_tooltip = false
 icon = SubResource("AtlasTexture_5g7vs")
 icon_alignment = 1
 
-[node name="UIAnimationComponent" type="Node" parent="UIController/Control/VBoxContainer/HBoxContainer/RightBtn" unique_id=316482067]
+[node name="UIAnimationComponent" type="Node" parent="UIController/LaunchControls/VBoxContainer/HBoxContainer/RightBtn" unique_id=316482067]
 script = ExtResource("5_t4prj")
 animation_type = 1
 trigger = 1
@@ -222,7 +224,7 @@ ease_type = 3
 trans_type = 1
 metadata/_custom_type_script = "uid://cwyo51di2htfx"
 
-[node name="UIAnimationComponent" type="Node" parent="UIController/Control/VBoxContainer" unique_id=781992090]
+[node name="UIAnimationComponent" type="Node" parent="UIController/LaunchControls/VBoxContainer" unique_id=781992090]
 script = ExtResource("5_t4prj")
 animation_type = 4
 duration = 1.0

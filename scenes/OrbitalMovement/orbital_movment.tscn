@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://v4tegxn41t8j"]
+
+[ext_resource type="Script" uid="uid://6v8wn45qwki" path="res://scenes/OrbitalMovement/orbital_movment.gd" id="1_yvgxt"]
+
+[node name="OrbitalMovment" type="Path2D" unique_id=1791892549]
+script = ExtResource("1_yvgxt")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=1931702850]
+position = Vector2(26.025927, 1)

@@ -9,6 +9,19 @@ var current_mode: Mode = Mode.STRATEGY
 ## How smoothly the camera lerps to the asteroid in follow mode (higher = snappier).
 @export var follow_smoothing: float = 8.0
 
+#region Zoom
+## Minimum zoom level (most zoomed-in).
+@export var zoom_min: float = 0.5
+## Maximum zoom level (most zoomed-out).
+@export var zoom_max: float = 3.0
+## How much each scroll step changes the zoom.
+@export var zoom_step: float = 0.1
+## How fast the zoom lerps to its target (higher = snappier).
+@export var zoom_smoothing: float = 8.0
+
+var _target_zoom: float = 1.0
+#endregion
+
 #region Shake
 ## Current shake intensity (pixels). Decays over time.
 var _trauma: float = 0.0
@@ -42,6 +55,8 @@ func _ready() -> void:
 	#SignalHub.game_state_changed.connect(_on_asteroid_shot)
 
 
+	_target_zoom = zoom.x
+
 	# Start in strategy mode: detach from parent transform so arrow keys control position
 	set_mode(Mode.STRATEGY)
 
@@ -54,6 +69,7 @@ func _process(delta: float) -> void:
 			offset = Vector2.ZERO  # Reset any manual offset; shake will be applied separately
 			_process_follow(delta)
 
+	_process_zoom(delta)
 	_process_shake(delta)
 
 
@@ -75,6 +91,22 @@ func set_mode(new_mode: Mode) -> void:
 
 func _on_asteroid_shot() -> void:
 	set_mode(Mode.FOLLOW)
+#endregion
+
+
+#region Zoom
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				_target_zoom = clampf(_target_zoom - zoom_step, zoom_min, zoom_max)
+			elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				_target_zoom = clampf(_target_zoom + zoom_step, zoom_min, zoom_max)
+
+
+func _process_zoom(delta: float) -> void:
+	var new_zoom: float = lerpf(zoom.x, _target_zoom, zoom_smoothing * delta)
+	zoom = Vector2(new_zoom, new_zoom)
 #endregion
 
 

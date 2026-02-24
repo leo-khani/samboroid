@@ -159,15 +159,15 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ravj5"]
 resource_local_to_scene = true
 shader = SubResource("Shader_ravj5")
-shader_parameter/gravity_strength = 0.7
+shader_parameter/gravity_strength = 0.50000002375
 shader_parameter/inner_radius = 0.0870000041325
 shader_parameter/outer_radius = 0.5
 shader_parameter/core_color = Color(0.3, 0.85, 1, 1)
 shader_parameter/field_color = Color(0.05, 0.25, 0.7, 1)
 shader_parameter/ring_color = Color(1, 0.92, 0.35, 1)
-shader_parameter/outer_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
-shader_parameter/ring_count = 6
-shader_parameter/ring_speed = 1.1
+shader_parameter/outer_color = Color(0, 0.1, 0.4, 0)
+shader_parameter/ring_count = 4
+shader_parameter/ring_speed = 0.30000001099011997
 shader_parameter/ring_width = 0.018
 shader_parameter/ring_spacing = 0.22
 shader_parameter/breath_speed = 0.7
@@ -216,6 +216,7 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1348646464]
+visible = false
 shape = SubResource("CircleShape2D_fxu2j")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1575841339]

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bprm003tqbwnq"]
+
+[sub_resource type="Curve" id="Curve_l455h"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.74390244, 0.9924855), 0.0, 0.0, 0, 0, Vector2(1, 0), -11.208973, 0.0, 0, 0]
+point_count = 3
+
+[node name="WorldBorderParticles" type="CPUParticles2D" unique_id=914695157]
+amount = 300
+lifetime = 3.0
+emission_shape = 3
+emission_rect_extents = Vector2(20, 300)
+gravity = Vector2(0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 30.0
+angular_velocity_min = 10.0
+angular_velocity_max = 50.0
+linear_accel_min = 10.0
+linear_accel_max = 20.0
+scale_amount_min = 10.0
+scale_amount_max = 30.0
+scale_amount_curve = SubResource("Curve_l455h")
+color = Color(0.043137256, 0.07450981, 0.12941177, 1)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=198180260]
+visible = false

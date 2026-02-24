@@ -4,6 +4,7 @@ extends Node2D
 @onready var lunch_btn: Button = %LunchBtn
 @onready var right_btn: Button = %RightBtn
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var launch_controls: Control = %LaunchControls
 
 @onready var mater_fluid_label: Label = %MaterFluidLabel
 @onready var mater_fluid_progress_bar: ProgressBar = %MaterFluidProgressBar
@@ -16,6 +17,9 @@ extends Node2D
 @export var aim_rotate_speed: float = 90.0
 ## Launch power applied to the asteroid.
 @export var launch_power: float = 200.0
+## Trajectory prediction range
+@export var trajectory_range: float = 20.0
+
 
 ## Current aim angle in radians (0 = right, starts pointing up).
 var aim_angle: float = -PI / 2.0
@@ -37,6 +41,7 @@ func _ready():
 
 	SignalHub.planet_mass_added.connect(_update_mater_fluid)
 	SignalHub.planet_mass_removed.connect(_update_mater_fluid)
+	SignalHub.game_state_changed.connect(_on_game_state_changed)
 
 	mater_fluid_progress_bar.max_value = get_parent().max_mass_fluid
 	_update_mater_fluid(null)
@@ -129,7 +134,7 @@ func update_trajectory():
 	# First step after launch has no queued gravity yet.
 	var pending_gravity = Vector2.ZERO
 
-	for i in range(50):
+	for i in range(trajectory_range):
 		trajectory_line.add_point(trajectory_line.to_local(sim_pos))
 
 		# 1. Apply pending gravity from previous step (acceleration = force / mass)
@@ -165,3 +170,10 @@ func _input(event):
 		asteroid.take_damage()
 		await get_tree().create_timer(1.0).timeout
 		SignalHub.emit_level_failed(get_parent().current_level)
+
+func _on_game_state_changed(new_state: GlobalEnum.GameState):
+	match new_state:
+		GlobalEnum.GameState.STRATEGY:
+			launch_controls.show()
+		_:
+			launch_controls.hide()
